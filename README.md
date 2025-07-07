@@ -32,10 +32,3 @@ Returns full data for the given item. Useful for store employees/admins.
 
 ### 4. **PATCH** `/admin/restock/<ItemID>/<RestockedAmount>`
 Increases the stock of an item by the given amount.
-
-## Project Structure
-├── main.py          # Flask API code
-├── dbCode.py        # Database logic (fetching, updating)
-├── .env             # MongoDB URI (in .gitignore)
-├── requirements.txt # pip packages
-├── README.md        # (this file)
