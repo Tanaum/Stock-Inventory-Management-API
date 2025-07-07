@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from bson.decimal128 import Decimal128
 
 load_dotenv() # loads stuff from .env into environment variables
 
@@ -16,6 +17,9 @@ collection = db['inventory_items']
 def GetScannedItemInfo(ItemID):
     query = {"_id": ItemID}
     doc = collection.find_one(query)
+    # Convert Decimal128s to str
+    if isinstance(doc["Price"], Decimal128):
+        doc["Price"] = str(doc["Price"].to_decimal())
     return doc
 
 def UpdateInfoRestocked(ItemID, RestockedAmount):
