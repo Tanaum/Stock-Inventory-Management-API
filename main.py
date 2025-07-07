@@ -36,8 +36,6 @@ def DecrementItems(ItemID, NumTimesScanned):
 # for lets say an employee to look up the price of an item
 @app.route("/admin/<ItemID>", methods=["GET"])
 def GetInfo(ItemID):
-    # send itemid over to a function
-    # return the info
     if AllData is None:
         return jsonify({"Message": "Item not found"}), 400
     else:
