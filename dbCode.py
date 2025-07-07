@@ -19,13 +19,16 @@ try:
 except Exception as e:
     print(e)
 
-# sample db + collection + data
-# just realised i didnt need this el o el
-# db = client['inventory']
-# collection = db['inventory_items']
-# print(db.list_collection_names())
-# data_items = [
-#     {"ItemName":"Apple", "Price": 1.50, "NumInStock":50, "Flagged":False},
-#     {"ItemName":"Banana", "Price": 0.50, "NumInStock":30, "Flagged":False},
-#     {"ItemName":"Orange", "Price": 2.00, "NumInStock":10, "Flagged":True}
-# ]
+db = client['inventory']
+collection = db['inventory_items']
+
+def GetScannedItemInfo(ItemID):
+    query = {"_id": ItemID}
+    doc = collection.find_one(query)
+    return doc
+
+def UpdateInfoRestocked(ItemID, RestockedAmount):
+    query = {"_id":ItemID}
+    doc = collection.find_one(query)
+    newvalue = {"$set":{"NumInStock": (doc["NumInStock"] + RestockedAmount)}}
+    collection.update_one(query, newvalue)

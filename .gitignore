@@ -1,2 +1,4 @@
 basic_plan.txt
 .env
+test.py
+__pycache__
