@@ -30,7 +30,22 @@ def GetScannedItemInfo(ItemID):
 def UpdateInfoRestocked(ItemID, RestockedAmount):
     query = {"_id":ItemID}
     doc = collection.find_one(query)
-    newvalue = {"$set":{"NumInStock": (doc["NumInStock"] + RestockedAmount)}}
+    NewAmount = doc["NumInStock"] + RestockedAmount
+    newvalue = {"$set":{"NumInStock": NewAmount}}
     result = collection.update_one(query, newvalue)
 
     return result.modified_count > 0 # checks if anything even modified
+
+def UpdateInfoScanned(ItemID, NumTimesScanned):
+    query = {"_id":ItemID}
+    doc = collection.find_one(query)
+    NewAmount = doc["NumInStock"] - NumTimesScanned
+
+    if NewAmount <= 10:
+        newvalue = {"$set":{"NumInStock": NewAmount, "Flagged": True}}
+        result = collection.update_one(query, newvalue)
+    else:
+        newvalue = {"$set":{"NumInStock": NewAmount}}
+        result = collection.update_one(query, newvalue)        
+
+    return result.modified_count > 0
