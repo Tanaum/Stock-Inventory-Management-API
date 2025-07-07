@@ -31,4 +31,6 @@ def UpdateInfoRestocked(ItemID, RestockedAmount):
     query = {"_id":ItemID}
     doc = collection.find_one(query)
     newvalue = {"$set":{"NumInStock": (doc["NumInStock"] + RestockedAmount)}}
-    collection.update_one(query, newvalue)
+    result = collection.update_one(query, newvalue)
+
+    return result.modified_count > 0 # checks if anything even modified
