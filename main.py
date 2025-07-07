@@ -6,18 +6,18 @@ app = Flask(__name__)
 # retrieving info abt an item that has been scanned
 @app.route("/scanned/<ItemID>/<NumTimesScanned>", methods=["GET"])
 def ScannedItemInfo(ItemID, NumTimesScanned):
-    AllData = GetScannedItemInfo(ItemID) # will get back a dict
+    AllData = GetScannedItemInfo(int(ItemID)) # will get back a dict
 
-    if AllData["Flagged"]:
-        return jsonify({"Message": "Item out of stock"}), 400
-    elif AllData is None:
-        return jsonify({"Message": "Item not found"}), 400        
+    if AllData is None:
+        return jsonify({"Message": "Item not found"}), 400
+    elif AllData["Flagged"]:
+        return jsonify({"Message": "Item out of stock"}), 400        
     else:
         ReturnData = {
             "id": AllData["_id"],
             "ItemName" : AllData["ItemName"],
             "Price" : AllData["Price"],
-            "TotalPrice" : AllData["Price"]*int(NumTimesScanned)
+            "TotalPrice" : float(AllData["Price"])*int(NumTimesScanned)
         }
 
         return jsonify(ReturnData), 200        

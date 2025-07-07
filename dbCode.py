@@ -17,8 +17,11 @@ collection = db['inventory_items']
 def GetScannedItemInfo(ItemID):
     query = {"_id": ItemID}
     doc = collection.find_one(query)
+
+    if doc is None:
+        return None
     # Convert Decimal128s to str
-    if isinstance(doc["Price"], Decimal128):
+    elif isinstance(doc["Price"], Decimal128):
         doc["Price"] = str(doc["Price"].to_decimal())
     return doc
 
