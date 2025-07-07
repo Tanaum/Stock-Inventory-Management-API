@@ -1,7 +1,7 @@
 # contains all the code for the api
 
 from flask import Flask, request, jsonify
-from dbCode import GetScannedItemInfo, UpdateInfoRestocked
+from dbCode import GetScannedItemInfo, UpdateInfoRestocked, UpdateInfoScanned
 
 app = Flask(__name__)
 
@@ -26,15 +26,13 @@ def ScannedItemInfo(ItemID, NumTimesScanned):
 # to decrement
 @app.route("/scanned/<ItemID>/<NumTimesScanned>", methods=["PATCH"])
 def DecrementItems(ItemID, NumTimesScanned):
-    x = UpdateInfo(ItemID, NumTimesScanned) # to be coded -- will return true/false value
+    x = UpdateInfoScanned(ItemID, NumTimesScanned) # to be coded -- will return true/false value
     if x:
         data = {"message":"Data successfully stored"}
         return jsonify(data), 200
     else:
         data = {"message":"An error occured"}
-        return jsonify(data), 400
-
-    return jsonify(data)    
+        return jsonify(data), 400   
 
 # for lets say an employee to look up the price of an item
 @app.route("/admin/<ItemID>", methods=["GET"])
@@ -49,7 +47,7 @@ def GetInfo(ItemID):
 def Restock(ItemID, RestockedAmount):
     # send this info to a function
     # function will update each row accordingly
-    x = UpdateInfoRestocked(ItemID, RestockedAmount) # to be coded -- will return true/false value
+    x = UpdateInfoRestocked(ItemID, RestockedAmount) # will return true/false value
     if x:
         data = {"message":"Data successfully stored"}
         return jsonify(data), 200
