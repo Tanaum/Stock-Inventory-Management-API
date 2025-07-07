@@ -5,8 +5,8 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # retrieving info abt an item that has been scanned
-@app.route("/scanned/<ItemID>", methods=["GET"])
-def ScannedItemInfo(ItemID):
+@app.route("/scanned/<ItemID>/<NumTimesScanned>", methods=["GET"])
+def ScannedItemInfo(ItemID, NumTimesScanned):
     # send the itemid over to a function
     # function returns data about the item
     # use a function to decrement the item by 1 (for now)
@@ -15,11 +15,25 @@ def ScannedItemInfo(ItemID):
     ReturnData = {
         "id": AllData["_id"],
         "ItemName" : AllData["ItemName"],
-        "Price" : AllData["Price"]
+        "Price" : AllData["Price"],
+        "TotalPrice" : AllData["Price"]*int(NumTimesScanned)
     }
 
     return jsonify(ReturnData)
-    #wait i just realised wont this use post too???
+    #wait i just realised wont this use post too??? --> make it into separate functions (idt these are called functions but idek)
+
+# to decrement
+@app.route("/scanned/<ItemID>/<NumTimesScanned>", methods=["PATCH"])
+def DecrementItems(ItemID, NumTimesScanned):
+    x = UpdateInfo(ItemID, NumTimesScanned) # to be coded -- will return true/false value
+    if x:
+        data = {"message":"Data successfully stored"}
+        return jsonify(data), 200
+    else:
+        data = {"message":"An error occured"}
+        return jsonify(data), 400
+
+    return jsonify(data)    
 
 # for lets say an employee to look up the price of an item
 @app.route("/admin/<ItemID>")
@@ -31,17 +45,17 @@ def GetInfo(ItemID):
     ...
 
 # to update the amount of items restocked
-@app.route("/admin/restock/<ItemID>/<RestockedAmount>", methods=["POST"])
+@app.route("/admin/restock/<ItemID>/<RestockedAmount>", methods=["PATCH"])
 def Restock(ItemID, RestockedAmount):
     # send this info to a function
     # function will update each row accordingly
     x = UpdateInfo(ItemID, RestockedAmount) # to be coded -- will return true/false value
     if x:
         data = {"message":"Data successfully stored"}
+        return jsonify(data), 200
     else:
         data = {"message":"An error occured"}
-    
-    return jsonify(data)
+        return jsonify(data), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
