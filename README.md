@@ -11,24 +11,41 @@ A simple RESTful API built with **Flask** and **MongoDB Atlas** to manage invent
 - Secure `.env` usage for MongoDB URI
   
 ## Technologies Used
-- Python
 - Flask
 - MongoDB (hosted on MongoDB Atlas)
+- Postman (for testing the API)
 - `pymongo`
 - `python-dotenv`
 
+## What I Learned
+- Using `.env` to avoid accidentally pushing sensitive data onto a public repo
+- CRUD operations in MongoDB
+- Difference between PATCH/POST/PUT HTTP methods
+
 ## API Endpoints
 
-### 1. **GET** `/scanned/<ItemID>/<NumTimesScanned>`
-Returns basic info (name, price, total price) for a scanned item.  
-Rejects if item is out of stock.
+### GET
+1. `/scanned/<ItemID>/<NumTimesScanned>`
+  - Returns basic info (name, price, total price) for a scanned item.
+  - Rejects if item is out of stock.
+2. `/admin/<ItemID>`
+  - Returns full data for the given item. Useful for store employees/admins.
 
-### 2. **PATCH** `/scanned/<ItemID>/<NumTimesScanned>`
-Decreases the item's `NumInStock` by the number of times it was scanned.  
-Automatically flags item if stock drops to ≤10.
+### PATCH
+1. `/scanned/<ItemID>/<NumTimesScanned>`
+  - Decreases the item's `NumInStock` by the number of times it was scanned.
+  - Automatically flags item if stock drops to ≤10.
 
-### 3. **GET** `/admin/<ItemID>`
-Returns full data for the given item. Useful for store employees/admins.
+2. `/admin/restock/<ItemID>/<RestockedAmount>`
+  - Increases the stock of an item by the given amount.
 
-### 4. **PATCH** `/admin/restock/<ItemID>/<RestockedAmount>`
-Increases the stock of an item by the given amount.
+## How To Run It
+1. Clone the repository onto your machine.
+2. Make sure that necessary libraries are installed using:
+   ```bash
+   pip install python-dotenv
+   pip install pymongo
+   ```
+3. In place of `os.getenv("MONGO_URI")` paste your MongoDB URI.
+4. Add some data into your collection (by either using MongoDB Atlas or Python)
+5. Run `main.py`, copy the URL in the terminal and paste it in Postman.
