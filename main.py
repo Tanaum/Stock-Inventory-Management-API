@@ -25,7 +25,7 @@ def ScannedItemInfo(ItemID, NumTimesScanned):
 # to decrement
 @app.route("/scanned/<ItemID>/<NumTimesScanned>", methods=["PATCH"])
 def DecrementItems(ItemID, NumTimesScanned):
-    x = UpdateInfoScanned(int(ItemID), int(NumTimesScanned)) # to be coded -- will return true/false value
+    x = UpdateInfoScanned(int(ItemID), int(NumTimesScanned)) # will return true/false value or str value
     if type(x) == str:
         data = {"message":"Out of stock"}
         return jsonify(data), 400
@@ -48,8 +48,6 @@ def GetInfo(ItemID):
 # to update the amount of items restocked
 @app.route("/admin/restock/<ItemID>/<RestockedAmount>", methods=["PATCH"])
 def Restock(ItemID, RestockedAmount):
-    # send this info to a function
-    # function will update each row accordingly
     x = UpdateInfoRestocked(int(ItemID), int(RestockedAmount)) # will return true/false value
     if x:
         data = {"message":"Data successfully stored"}
