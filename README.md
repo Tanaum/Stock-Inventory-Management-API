@@ -47,5 +47,9 @@ A simple RESTful API built with **Flask** and **MongoDB Atlas** to manage invent
    pip install pymongo
    ```
 3. In place of `os.getenv("MONGO_URI")` paste your MongoDB URI.
-4. Add some data into your collection (by either using MongoDB Atlas or Python)
+4. Add some data into your collection (by either using MongoDB Atlas or Python). It must have the following field names: _id (INT), Price, Flagged (BOOLEAN), ItemName (STR).
 5. Run `main.py`, copy the URL in the terminal and paste it in Postman.
+
+Fun facts:
+1. I coded all of this in less than 10 hours!
+2. It was inspired by an example given in my O Levels CS textbook.
