@@ -1,4 +1,4 @@
-# Stock Inventory Mangement API
+# Stock Inventory Management API
 
 A simple RESTful API built with **Flask** and **MongoDB Atlas** to manage inventory for a store-like system.
 
