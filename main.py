@@ -26,7 +26,10 @@ def ScannedItemInfo(ItemID, NumTimesScanned):
 @app.route("/scanned/<ItemID>/<NumTimesScanned>", methods=["PATCH"])
 def DecrementItems(ItemID, NumTimesScanned):
     x = UpdateInfoScanned(int(ItemID), int(NumTimesScanned)) # to be coded -- will return true/false value
-    if x:
+    if type(x) == str:
+        data = {"message":"Out of stock"}
+        return jsonify(data), 400
+    elif x:
         data = {"message":"Data successfully stored"}
         return jsonify(data), 200
     else:

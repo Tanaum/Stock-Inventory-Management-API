@@ -44,11 +44,14 @@ def UpdateInfoScanned(ItemID, NumTimesScanned):
     doc = collection.find_one(query)
     NewAmount = doc["NumInStock"] - NumTimesScanned
 
-    if NewAmount <= 10:
+    if doc["Flagged"]:
+        return "Out of stock"
+
+    elif NewAmount <= 10:
         newvalue = {"$set":{"NumInStock": NewAmount, "Flagged": True}}
         result = collection.update_one(query, newvalue)
+        return result.modified_count > 0
     else:
         newvalue = {"$set":{"NumInStock": NewAmount}}
-        result = collection.update_one(query, newvalue)        
-
-    return result.modified_count > 0
+        result = collection.update_one(query, newvalue)
+        return result.modified_count > 0
